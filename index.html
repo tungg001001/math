@@ -367,10 +367,10 @@
             <div class="space-y-2">
               <label class="text-xs font-mono text-slate-300">聲波類型 Wave Type</label>
               <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
-                <button onclick="setWaveType('sine')" class="p-2 bg-slate-800 text-cyan-400 rounded-lg border border-cyan-500/30">正弦波 (Sine)</button>
-                <button onclick="setWaveType('square')" class="p-2 bg-slate-800/50 text-slate-400 rounded-lg border border-slate-700">方波 (Square)</button>
-                <button onclick="setWaveType('sawtooth')" class="p-2 bg-slate-800/50 text-slate-400 rounded-lg border border-slate-700">鋸齒波 (Sawtooth)</button>
-                <button onclick="setWaveType('triangle')" class="p-2 bg-slate-800/50 text-slate-400 rounded-lg border border-slate-700">三角波 (Triangle)</button>
+                <button id="btn-wave-sine" onclick="setWaveType('sine')" class="wave-type-btn p-2 bg-slate-800 text-cyan-400 rounded-lg border border-cyan-500/30">正弦波 (Sine)</button>
+                <button id="btn-wave-square" onclick="setWaveType('square')" class="wave-type-btn p-2 bg-slate-800/50 text-slate-400 rounded-lg border border-slate-700">方波 (Square)</button>
+                <button id="btn-wave-sawtooth" onclick="setWaveType('sawtooth')" class="wave-type-btn p-2 bg-slate-800/50 text-slate-400 rounded-lg border border-slate-700">鋸齒波 (Sawtooth)</button>
+                <button id="btn-wave-triangle" onclick="setWaveType('triangle')" class="wave-type-btn p-2 bg-slate-800/50 text-slate-400 rounded-lg border border-slate-700">三角波 (Triangle)</button>
               </div>
             </div>
           </div>
@@ -542,26 +542,12 @@
 
     let animM1, animM2, animM3, animM5;
 
-    window.addEventListener('DOMContentLoaded', () => {
-      switchTab('m1');
-      
-      document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-        document.getElementById('mobile-menu').classList.toggle('hidden');
-      });
-
-      initSliderEvents();
-
-      if (typeof renderMathInElement === 'function') {
-        renderMathInElement(document.body, {
-          delimiters: [
-            {left: '$$', right: '$$', display: true},
-            {left: '$', right: '$', display: false}
-          ]
-        });
+    // 全域分頁切換函式 (相容 numeric 與 m-string ID)
+    window.switchTab = function(tabId) {
+      if (typeof tabId === 'number' || !tabId.startsWith('m')) {
+        tabId = 'm' + tabId;
       }
-    });
 
-    function switchTab(tabId) {
       if (animM1) cancelAnimationFrame(animM1);
       if (animM2) cancelAnimationFrame(animM2);
       if (animM3) cancelAnimationFrame(animM3);
@@ -581,14 +567,41 @@
         btn.classList.add('text-cyan-400', 'bg-slate-800/80', 'border', 'border-cyan-500/30');
       }
 
-      document.getElementById('mobile-menu').classList.add('hidden');
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileMenu) mobileMenu.classList.add('hidden');
 
       if (tabId === 'm1') initM1Canvas();
       if (tabId === 'm2') initM2Canvas();
       if (tabId === 'm3') initM3Canvas();
       if (tabId === 'm5') initM5Canvas();
       if (tabId === 'm6') loadQuizFromGAS();
-    }
+    };
+
+    window.openTeacherTab = function() {
+      window.switchTab('m7');
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      window.switchTab('m1');
+      
+      const mobileBtn = document.getElementById('mobile-menu-btn');
+      if (mobileBtn) {
+        mobileBtn.addEventListener('click', () => {
+          document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+      }
+
+      initSliderEvents();
+
+      if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ]
+        });
+      }
+    });
 
     function initSliderEvents() {
       const m1Slider = document.getElementById('m1-angle-slider');
@@ -599,24 +612,38 @@
         if (slider) slider.addEventListener('input', drawM2);
       });
 
-      document.getElementById('m3-slider-speed').addEventListener('input', (e) => {
-        document.getElementById('m3-val-speed').innerText = parseFloat(e.target.value).toFixed(1) + 'x';
-      });
-      document.getElementById('m3-slider-radius').addEventListener('input', (e) => {
-        document.getElementById('m3-val-radius').innerText = e.target.value + 'px';
-      });
+      const m3Speed = document.getElementById('m3-slider-speed');
+      if (m3Speed) {
+        m3Speed.addEventListener('input', (e) => {
+          document.getElementById('m3-val-speed').innerText = parseFloat(e.target.value).toFixed(1) + 'x';
+        });
+      }
 
-      document.getElementById('m5-slider-freq').addEventListener('input', (e) => {
-        const freq = e.target.value;
-        document.getElementById('m5-val-freq').innerText = freq + ' Hz';
-        if (oscillator && isAudioPlaying) {
-          oscillator.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        }
-      });
-      document.getElementById('m5-slider-harmonics').addEventListener('input', (e) => {
-        document.getElementById('m5-val-harmonics').innerText = '諧波數 N = ' + e.target.value;
-        drawM5();
-      });
+      const m3Rad = document.getElementById('m3-slider-radius');
+      if (m3Rad) {
+        m3Rad.addEventListener('input', (e) => {
+          document.getElementById('m3-val-radius').innerText = e.target.value + 'px';
+        });
+      }
+
+      const m5Freq = document.getElementById('m5-slider-freq');
+      if (m5Freq) {
+        m5Freq.addEventListener('input', (e) => {
+          const freq = e.target.value;
+          document.getElementById('m5-val-freq').innerText = freq + ' Hz';
+          if (oscillator && isAudioPlaying) {
+            oscillator.frequency.setValueAtTime(freq, audioCtx.currentTime);
+          }
+        });
+      }
+
+      const m5Harm = document.getElementById('m5-slider-harmonics');
+      if (m5Harm) {
+        m5Harm.addEventListener('input', (e) => {
+          document.getElementById('m5-val-harmonics').innerText = '諧波數 N = ' + e.target.value;
+          drawM5();
+        });
+      }
     }
 
     // MODULE 1 CANVAS
@@ -751,12 +778,17 @@
       const btnToggle = document.getElementById('m3-btn-toggle');
       const btnReset = document.getElementById('m3-btn-reset');
 
-      btnToggle.onclick = () => {
-        m3IsRunning = !m3IsRunning;
-        btnToggle.innerText = m3IsRunning ? '暫停 Pause' : '繼續 Play';
-      };
+      if (btnToggle) {
+        btnToggle.onclick = () => {
+          m3IsRunning = !m3IsRunning;
+          btnToggle.innerText = m3IsRunning ? '暫停 Pause' : '繼續 Play';
+        };
+      }
 
-      btnReset.onclick = () => { m3Angle = 0; };
+      if (btnReset) {
+        btnReset.onclick = () => { m3Angle = 0; };
+      }
+
       loopM3();
     }
 
@@ -829,7 +861,7 @@
       animM3 = requestAnimationFrame(loopM3);
     }
 
-    // MODULE 5: AUDIO SYNTH & FOURIER
+    // MODULE 5: AUDIO SYNTH & FOURIER WAVEFORM VISUALIZER
     function toggleAudioSynth() {
       if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -868,6 +900,17 @@
       if (oscillator && isAudioPlaying) {
         oscillator.type = type;
       }
+
+      // UI Highlight Update
+      document.querySelectorAll('.wave-type-btn').forEach(b => {
+        b.className = 'wave-type-btn p-2 bg-slate-800/50 text-slate-400 rounded-lg border border-slate-700';
+      });
+      const activeBtn = document.getElementById(`btn-wave-${type}`);
+      if (activeBtn) {
+        activeBtn.className = 'wave-type-btn p-2 bg-slate-800 text-cyan-400 rounded-lg border border-cyan-500/30';
+      }
+
+      drawM5();
     }
 
     function initM5Canvas() { drawM5(); }
@@ -901,9 +944,24 @@
         let ySum = 0;
         const xVal = (x - width / 2) * 0.03;
 
-        for (let i = 1; i <= N; i++) {
-          const n = 2 * i - 1;
-          ySum += (1 / n) * Math.sin(n * xVal);
+        if (currentWaveType === 'sine') {
+          ySum = Math.sin(xVal);
+        } else if (currentWaveType === 'square') {
+          for (let i = 1; i <= N; i++) {
+            const n = 2 * i - 1;
+            ySum += (1 / n) * Math.sin(n * xVal);
+          }
+        } else if (currentWaveType === 'sawtooth') {
+          for (let i = 1; i <= N; i++) {
+            ySum += (1 / i) * Math.sin(i * xVal);
+          }
+          ySum *= 0.6;
+        } else if (currentWaveType === 'triangle') {
+          for (let i = 1; i <= N; i++) {
+            const n = 2 * i - 1;
+            const sign = (i % 2 === 0) ? -1 : 1;
+            ySum += (sign / (n * n)) * Math.sin(n * xVal);
+          }
         }
 
         const canvasY = centerY - ySum * 50;
