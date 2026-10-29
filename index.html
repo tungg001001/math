@@ -525,8 +525,8 @@
 
   <!-- JAVASCRIPT CORE LOGIC -->
   <script>
-    // 最新指定的 GAS Web App URL 部署端點
-    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxNGNkpvwWo4mcStTXcMJ-UR_l6G4JZwYwZ5lrE6GkkjWbOGDeu0Npa1TPo1MlJLU2L1w/exec";
+    // 指定最新的 GAS Web App URL 端點
+    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbwBQscNKy8N2BAX9R1V8-PvNJx_1mRncppjBSzXyQnP8EPZ1cA48UZXRZeMFEVHoNyofQ/exec";
     
     let teacherPasswordCache = "";
     let isAnswersPublishedGlobally = false;
@@ -1027,7 +1027,7 @@
           alert('交卷失敗：' + data.message);
         }
       } catch (err) {
-        alert('雲端伺服器通訊錯誤，請確認網路後重試。');
+        alert('雲端伺服器通訊錯誤，請確認網路與 GAS 權限後重試。');
       } finally {
         btn.disabled = false;
         btn.innerText = '確認交卷 (Submit Quiz)';
