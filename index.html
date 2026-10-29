@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三角函數全方位互動學習與測驗系統</title>
+    <!-- MathJax 公式渲染 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 圖示 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass-card { background: rgba(51, 65, 85, 0.4); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        input, select { background: rgba(15, 23, 42, 0.8) !important; color: #f8fafc !important; border: 1px solid #475569 !important; }
+        input:focus, select:focus { border-color: #38bdf8 !important; outline: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- 導覽列 -->
+    <nav class="glass sticky top-0 z-50 px-6 py-4 flex flex-wrap justify-between items-center border-b border-slate-700">
+        <div class="flex items-center space-x-3">
+            <i class="fa-solid fa-wave-square text-2xl text-sky-400"></i>
+            <span class="text-xl font-bold bg-gradient-to-r from-sky-400 to-indigo-400 bg-clip-text text-transparent">
+                TrigMaster 三角函數學習系統
+            </span>
+        </div>
+        <div class="flex space-x-2 mt-2 sm:mt-0">
+            <button onclick="switchTab('lab')" id="tab-lab" class="px-4 py-2 rounded-lg font-medium transition glass hover:bg-slate-700 text-sky-400 border-sky-400 border">
+                <i class="fa-solid fa-flask mr-1"></i>動態探索工坊
+            </button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="px-4 py-2 rounded-lg font-medium transition glass hover:bg-slate-700">
+                <i class="fa-solid fa-pen-to-square mr-1"></i>線上測驗 (20題)
+            </button>
+            <button onclick="switchTab('teacher')" id="tab-teacher" class="px-4 py-2 rounded-lg font-medium transition glass hover:bg-slate-700">
+                <i class="fa-solid fa-user-tie mr-1"></i>教師成績管理
+            </button>
+        </div>
+    </nav>
+
+    <!-- 主要內容區 -->
+    <main class="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full">
+
+        <!-- 模組一：動態三角函數探索工坊 -->
+        <section id="sec-lab" class="space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- 動態單位圓 -->
+                <div class="glass p-6 rounded-2xl shadow-xl flex flex-col items-center">
+                    <h2 class="text-xl font-bold mb-4 text-sky-400 flex items-center self-start">
+                        <i class="fa-solid fa-circle-notch mr-2"></i>1. 動態單位圓 (Unit Circle)
+                    </h2>
+                    <canvas id="unitCircleCanvas" width="400" height="400" class="bg-slate-900 rounded-xl cursor-pointer border border-slate-700 max-w-full"></canvas>
+                    <div class="w-full mt-4 space-y-3">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-400">角度 $\theta$: <span id="angleDegVal" class="text-sky-400 font-bold">45°</span> (<span id="angleRadVal" class="text-indigo-400 font-bold">0.79 rad</span>)</span>
+                            <button id="animBtn" class="px-3 py-1 bg-sky-600 hover:bg-sky-500 rounded text-xs font-bold transition">播放/暫停</button>
+                        </div>
+                        <input type="range" id="angleSlider" min="0" max="360" value="45" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+                        <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                            <div class="p-2 glass-card rounded"><span class="text-red-400 font-bold">$\sin\theta$:</span> <span id="sinVal">0.707</span></div>
+                            <div class="p-2 glass-card rounded"><span class="text-blue-400 font-bold">$\cos\theta$:</span> <span id="cosVal">0.707</span></div>
+                            <div class="p-2 glass-card rounded"><span class="text-emerald-400 font-bold">$\tan\theta$:</span> <span id="tanVal">1.000</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 波形合成 -->
+                <div class="glass p-6 rounded-2xl shadow-xl flex flex-col">
+                    <h2 class="text-xl font-bold mb-2 text-sky-400 flex items-center">
+                        <i class="fa-solid fa-wave-square mr-2"></i>2. 波形合成 (Fourier Wave Synthesizer)
+                    </h2>
+                    <p class="text-xs text-slate-400 mb-4">使用正弦波疊加合成複雜波形，支援音訊聆聽。</p>
+                    <canvas id="synthCanvas" width="500" height="200" class="bg-slate-900 rounded-xl border border-slate-700 w-full mb-4"></canvas>
+                    <div class="space-y-3 text-xs flex-grow">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-16">基頻 $f_1$:</span>
+                            <input type="range" id="f1Amp" min="0" max="1" step="0.1" value="1" class="flex-grow">
+                            <button onclick="applyPreset('square')" class="px-2 py-1 bg-slate-700 hover:bg-slate-600 rounded">方波預設</button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="w-16">3次諧波:</span>
+                            <input type="range" id="f3Amp" min="0" max="1" step="0.1" value="0.33" class="flex-grow">
+                            <button onclick="applyPreset('saw')" class="px-2 py-1 bg-slate-700 hover:bg-slate-600 rounded">鋸齒波</button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="w-16">5次諧波:</span>
+                            <input type="range" id="f5Amp" min="0" max="1" step="0.1" value="0.2" class="flex-grow">
+                            <button onclick="toggleAudio()" id="audioBtn" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 rounded font-bold">
+                                <i class="fa-solid fa-volume-high mr-1"></i>播放合成聲音
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 利薩茹圖形 -->
+            <div class="glass p-6 rounded-2xl shadow-xl">
+                <h2 class="text-xl font-bold mb-4 text-sky-400 flex items-center">
+                    <i class="fa-solid fa-atom mr-2"></i>3. 利薩茹圖形 (Lissajous Curves)
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    <canvas id="lissajousCanvas" width="300" height="300" class="bg-slate-900 rounded-xl border border-slate-700 mx-auto"></canvas>
+                    <div class="md:col-span-2 space-y-4 text-sm">
+                        <p class="text-slate-300">參數方程：$x = \sin(a \cdot t + \delta), \quad y = \sin(b \cdot t)$</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-slate-400 mb-1">X 頻率比 $a$: <span id="aRatioVal" class="text-sky-400 font-bold">3</span></label>
+                                <input type="range" id="aRatio" min="1" max="10" value="3" class="w-full">
+                            </div>
+                            <div>
+                                <label class="block text-slate-400 mb-1">Y 頻率比 $b$: <span id="bRatioVal" class="text-sky-400 font-bold">2</span></label>
+                                <input type="range" id="bRatio" min="1" max="10" value="2" class="w-full">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 mb-1">相位差 $\delta$: <span id="phaseVal" class="text-indigo-400 font-bold">90°</span></label>
+                            <input type="range" id="phase" min="0" max="360" value="90" class="w-full">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 模組二：學生線上測驗 (20題) -->
+        <section id="sec-quiz" class="hidden space-y-6">
+            <div id="quiz-login-card" class="glass p-8 rounded-2xl max-w-md mx-auto shadow-2xl">
+                <h2 class="text-2xl font-bold mb-6 text-center text-sky-400 flex items-center justify-center">
+                    <i class="fa-solid fa-user-graduate mr-2"></i>學生測驗登入
+                </h2>
+                <form id="studentLoginForm" onsubmit="startQuiz(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-slate-300">班級</label>
+                        <input type="text" id="stuClass" required placeholder="例如：高一1班" class="w-full px-4 py-2 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-slate-300">座號</label>
+                        <input type="number" id="stuNo" required placeholder="例如：05" class="w-full px-4 py-2 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-slate-300">姓名</label>
+                        <input type="text" id="stuName" required placeholder="例如：王小明" class="w-full px-4 py-2 rounded-lg">
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 rounded-lg font-bold text-white shadow-lg transition">
+                        開始線上測驗 (20題)
+                    </button>
+                </form>
+            </div>
+
+            <div id="quiz-main" class="hidden space-y-6">
+                <div class="glass p-4 rounded-xl flex justify-between items-center sticky top-20 z-40">
+                    <span class="font-bold text-sky-400" id="quizStudentInfo"></span>
+                    <div class="text-rose-400 font-mono text-lg font-bold">
+                        <i class="fa-regular fa-clock mr-1"></i>進行中
+                    </div>
+                </div>
+
+                <form id="quizForm" onsubmit="submitQuiz(event)" class="space-y-6">
+                    <div id="quizQuestionsContainer" class="space-y-6">
+                        <div class="text-center py-10 text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i>載入題庫中...</div>
+                    </div>
+                    <div class="text-center pt-4">
+                        <button type="submit" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition text-lg">
+                            <i class="fa-solid fa-paper-plane mr-2"></i>提交測驗解答
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="quiz-result" class="hidden glass p-8 rounded-2xl max-w-2xl mx-auto text-center space-y-6">
+                <i class="fa-solid fa-circle-check text-6xl text-emerald-400"></i>
+                <h2 class="text-3xl font-bold text-slate-100">測驗已成功提交！</h2>
+                <p class="text-lg text-slate-300">您的最終得分：<span id="finalScore" class="text-4xl font-extrabold text-amber-400">0</span> / 100 分</p>
+                
+                <div class="pt-4 border-t border-slate-700">
+                    <button onclick="fetchExplanations()" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-bold text-sm transition">
+                        <i class="fa-solid fa-book-open mr-1"></i>查看正確答案與詳細解析
+                    </button>
+                </div>
+
+                <div id="explainContainer" class="hidden text-left space-y-4 pt-4"></div>
+            </div>
+        </section>
+
+        <!-- 模組三：教師成績管理系統 -->
+        <section id="sec-teacher" class="hidden space-y-6">
+            <div id="teacher-login-card" class="glass p-8 rounded-2xl max-w-md mx-auto shadow-2xl">
+                <h2 class="text-2xl font-bold mb-6 text-center text-sky-400 flex items-center justify-center">
+                    <i class="fa-solid fa-lock mr-2"></i>教師後台登入
+                </h2>
+                <form onsubmit="teacherLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-slate-300">後台管理密碼</label>
+                        <input type="password" id="teacherPwd" required placeholder="請輸入密碼" class="w-full px-4 py-2 rounded-lg">
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-sky-600 hover:bg-sky-500 rounded-lg font-bold text-white shadow-lg transition">
+                        登入管理後台
+                    </button>
+                </form>
+            </div>
+
+            <div id="teacher-panel" class="hidden space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="glass p-5 rounded-xl border-l-4 border-sky-400">
+                        <div class="text-xs text-slate-400">應試總人數</div>
+                        <div class="text-3xl font-extrabold text-slate-100" id="statCount">0</div>
+                    </div>
+                    <div class="glass p-5 rounded-xl border-l-4 border-emerald-400">
+                        <div class="text-xs text-slate-400">平均分數</div>
+                        <div class="text-3xl font-extrabold text-emerald-400" id="statAvg">0.0</div>
+                    </div>
+                    <div class="glass p-5 rounded-xl border-l-4 border-amber-400">
+                        <div class="text-xs text-slate-400">最高分</div>
+                        <div class="text-3xl font-extrabold text-amber-400" id="statMax">0</div>
+                    </div>
+                    <div class="glass p-5 rounded-xl border-l-4 border-rose-400">
+                        <div class="text-xs text-slate-400">最低分</div>
+                        <div class="text-3xl font-extrabold text-rose-400" id="statMin">0</div>
+                    </div>
+                </div>
+
+                <div class="glass p-4 rounded-xl flex justify-between items-center">
+                    <button onclick="toggleAnnounce()" id="announceBtn" class="px-4 py-2 rounded-lg font-bold text-sm transition">
+                        <i class="fa-solid fa-bullhorn mr-1"></i>公佈解答狀態載入中...
+                    </button>
+                    <button onclick="refreshData()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm transition">
+                        <i class="fa-solid fa-rotate mr-1"></i>重新整理資料
+                    </button>
+                </div>
+
+                <div class="glass rounded-xl overflow-hidden shadow-xl border border-slate-700">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-300">
+                            <thead class="bg-slate-800 text-sky-400 uppercase text-xs">
+                                <tr>
+                                    <th class="px-6 py-3">提交時間</th>
+                                    <th class="px-6 py-3">班級</th>
+                                    <th class="px-6 py-3">座號</th>
+                                    <th class="px-6 py-3">姓名</th>
+                                    <th class="px-6 py-3">得分</th>
+                                    <th class="px-6 py-3 text-right">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scoreTableBody" class="divide-y divide-slate-700">
+                                <tr>
+                                    <td colspan="6" class="px-6 py-8 text-center text-slate-500">暫無學生成績紀錄</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // 🔗 更新為您最新的 GAS Web App 網址
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzluoAinnT7g3GARrcAtOrpk9tkcHyM2cTP_2hwP3Nfm0V96TU2Wi17AOUqfeMUu5usfA/exec";
+
+        let currentTab = 'lab';
+        let currentTeacherPassword = "";
+        let isAudioPlaying = false;
+        let audioCtx = null, osc1 = null, osc3 = null, osc5 = null;
+        let isAnnouncedState = false;
+
+        function switchTab(tab) {
+            currentTab = tab;
+            ['lab', 'quiz', 'teacher'].forEach(t => {
+                document.getElementById(`sec-${t}`).classList.add('hidden');
+                document.getElementById(`tab-${t}`).classList.remove('text-sky-400', 'border-sky-400', 'border');
+            });
+            document.getElementById(`sec-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).classList.add('text-sky-400', 'border-sky-400', 'border');
+        }
+
+        // 動態 Canvas 繪圖邏輯
+        const ucCanvas = document.getElementById('unitCircleCanvas');
+        const ucCtx = ucCanvas.getContext('2d');
+        let angleDeg = 45, isAnimating = false;
+
+        function drawUnitCircle() {
+            const cx = ucCanvas.width / 2, cy = ucCanvas.height / 2, r = 140;
+            const rad = angleDeg * Math.PI / 180;
+            ucCtx.clearRect(0, 0, ucCanvas.width, ucCanvas.height);
+
+            ucCtx.strokeStyle = '#334155'; ucCtx.lineWidth = 1;
+            ucCtx.beginPath(); ucCtx.moveTo(0, cy); ucCtx.lineTo(ucCanvas.width, cy); ucCtx.moveTo(cx, 0); ucCtx.lineTo(cx, ucCanvas.height); ucCtx.stroke();
+
+            ucCtx.strokeStyle = '#64748b'; ucCtx.lineWidth = 2;
+            ucCtx.beginPath(); ucCtx.arc(cx, cy, r, 0, Math.PI * 2); ucCtx.stroke();
+
+            const px = cx + r * Math.cos(rad), py = cy - r * Math.sin(rad);
+
+            ucCtx.strokeStyle = '#60a5fa'; ucCtx.lineWidth = 3;
+            ucCtx.beginPath(); ucCtx.moveTo(cx, cy); ucCtx.lineTo(px, cy); ucCtx.stroke();
+
+            ucCtx.strokeStyle = '#f87171'; ucCtx.lineWidth = 3;
+            ucCtx.beginPath(); ucCtx.moveTo(px, cy); ucCtx.lineTo(px, py); ucCtx.stroke();
+
+            ucCtx.strokeStyle = '#f8fafc'; ucCtx.lineWidth = 2;
+            ucCtx.beginPath(); ucCtx.moveTo(cx, cy); ucCtx.lineTo(px, py); ucCtx.stroke();
+
+            document.getElementById('angleDegVal').innerText = `${Math.round(angleDeg)}°`;
+            document.getElementById('angleRadVal').innerText = `${rad.toFixed(2)} rad`;
+            document.getElementById('sinVal').innerText = Math.sin(rad).toFixed(3);
+            document.getElementById('cosVal').innerText = Math.cos(rad).toFixed(3);
+            document.getElementById('tanVal').innerText = Math.abs(Math.cos(rad)) < 0.0001 ? "∞" : Math.tan(rad).toFixed(3);
+        }
+
+        document.getElementById('angleSlider').addEventListener('input', (e) => {
+            angleDeg = parseFloat(e.target.value);
+            drawUnitCircle();
+        });
+        document.getElementById('animBtn').addEventListener('click', () => { isAnimating = !isAnimating; });
+
+        function animateLoop() {
+            if (isAnimating) {
+                angleDeg = (angleDeg + 1) % 360;
+                document.getElementById('angleSlider').value = angleDeg;
+                drawUnitCircle();
+            }
+            drawSynthWave();
+            drawLissajous();
+            requestAnimationFrame(animateLoop);
+        }
+
+        // 波形合成
+        const synthCanvas = document.getElementById('synthCanvas'), synthCtx = synthCanvas.getContext('2d');
+        let synthTime = 0;
+        function drawSynthWave() {
+            synthCtx.clearRect(0, 0, synthCanvas.width, synthCanvas.height);
+            const cy = synthCanvas.height / 2;
+            const a1 = parseFloat(document.getElementById('f1Amp').value);
+            const a3 = parseFloat(document.getElementById('f3Amp').value);
+            const a5 = parseFloat(document.getElementById('f5Amp').value);
+
+            synthCtx.strokeStyle = '#38bdf8'; synthCtx.lineWidth = 2; synthCtx.beginPath();
+            for (let x = 0; x < synthCanvas.width; x++) {
+                const t = (x + synthTime) * 0.02;
+                const y = a1 * Math.sin(t) + a3 * Math.sin(3 * t) + a5 * Math.sin(5 * t);
+                const drawY = cy - y * 40;
+                if (x === 0) synthCtx.moveTo(x, drawY); else synthCtx.lineTo(x, drawY);
+            }
+            synthCtx.stroke(); synthTime += 2;
+        }
+
+        function applyPreset(type) {
+            if (type === 'square') { document.getElementById('f1Amp').value = 1.0; document.getElementById('f3Amp').value = 0.33; document.getElementById('f5Amp').value = 0.2; }
+            else if (type === 'saw') { document.getElementById('f1Amp').value = 1.0; document.getElementById('f3Amp').value = 0.5; document.getElementById('f5Amp').value = 0.25; }
+        }
+
+        function toggleAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (isAudioPlaying) {
+                osc1.stop(); osc3.stop(); osc5.stop(); isAudioPlaying = false;
+                document.getElementById('audioBtn').innerText = "播放合成聲音";
+            } else {
+                const baseFreq = 220;
+                osc1 = audioCtx.createOscillator(); osc3 = audioCtx.createOscillator(); osc5 = audioCtx.createOscillator();
+                osc1.frequency.value = baseFreq; osc3.frequency.value = baseFreq * 3; osc5.frequency.value = baseFreq * 5;
+                const g1 = audioCtx.createGain(), g3 = audioCtx.createGain(), g5 = audioCtx.createGain();
+                g1.gain.value = parseFloat(document.getElementById('f1Amp').value) * 0.3;
+                g3.gain.value = parseFloat(document.getElementById('f3Amp').value) * 0.3;
+                g5.gain.value = parseFloat(document.getElementById('f5Amp').value) * 0.3;
+                osc1.connect(g1); g1.connect(audioCtx.destination);
+                osc3.connect(g3); g3.connect(audioCtx.destination);
+                osc5.connect(g5); g5.connect(audioCtx.destination);
+                osc1.start(); osc3.start(); osc5.start(); isAudioPlaying = true;
+                document.getElementById('audioBtn').innerText = "停止播放";
+            }
+        }
+
+        // 利薩茹繪圖
+        const lisCanvas = document.getElementById('lissajousCanvas'), lisCtx = lisCanvas.getContext('2d');
+        let lisT = 0;
+        function drawLissajous() {
+            lisCtx.clearRect(0, 0, lisCanvas.width, lisCanvas.height);
+            const cx = lisCanvas.width / 2, cy = lisCanvas.height / 2, r = 100;
+            const a = parseInt(document.getElementById('aRatio').value), b = parseInt(document.getElementById('bRatio').value);
+            const phaseDeg = parseInt(document.getElementById('phase').value), phaseRad = phaseDeg * Math.PI / 180;
+
+            document.getElementById('aRatioVal').innerText = a; document.getElementById('bRatioVal').innerText = b; document.getElementById('phaseVal').innerText = `${phaseDeg}°`;
+            lisCtx.strokeStyle = '#a855f7'; lisCtx.lineWidth = 2; lisCtx.beginPath();
+            for (let t = 0; t < Math.PI * 2; t += 0.01) {
+                const x = cx + r * Math.sin(a * t + phaseRad + lisT * 0.02);
+                const y = cy + r * Math.sin(b * t);
+                if (t === 0) lisCtx.moveTo(x, y); else lisCtx.lineTo(x, y);
+            }
+            lisCtx.stroke(); lisT += 1;
+        }
+
+        // 測驗功能與 API 連動
+        function startQuiz(e) {
+            e.preventDefault();
+            const cls = document.getElementById('stuClass').value;
+            const no = document.getElementById('stuNo').value;
+            const name = document.getElementById('stuName').value;
+
+            document.getElementById('quizStudentInfo').innerText = `${cls} ${no}號 ${name}`;
+            document.getElementById('quiz-login-card').classList.add('hidden');
+            document.getElementById('quiz-main').classList.remove('hidden');
+
+            sendDataToGAS({ action: 'getQuestions' }, function(response) {
+                if (response.status === 'success') {
+                    renderQuizQuestions(response.questions);
+                }
+            });
+        }
+
+        function renderQuizQuestions(questions) {
+            const container = document.getElementById('quizQuestionsContainer');
+            container.innerHTML = '';
+            questions.forEach((item, idx) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'glass p-6 rounded-xl border border-slate-700 space-y-3';
+                qDiv.innerHTML = `
+                    <div class="font-bold text-lg text-sky-300">第 ${idx + 1} 題: ${item.q}</div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
+                        ${item.options.map((opt, oIdx) => `
+                            <label class="flex items-center space-x-3 p-3 glass-card rounded-lg cursor-pointer hover:bg-slate-700 transition">
+                                <input type="radio" name="q_${item.id}" value="${oIdx}" required class="w-4 h-4 text-sky-500">
+                                <span class="text-slate-200">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(qDiv);
+            });
+            if (window.MathJax) MathJax.typesetPromise();
+        }
+
+        function submitQuiz(e) {
+            e.preventDefault();
+            const stuClass = document.getElementById('stuClass').value;
+            const stuNo = document.getElementById('stuNo').value;
+            const stuName = document.getElementById('stuName').value;
+
+            const answers = {};
+            const inputs = document.querySelectorAll('#quizForm input[type="radio"]:checked');
+            inputs.forEach(input => {
+                const qId = input.name.replace('q_', '');
+                answers[qId] = input.value;
+            });
+
+            sendDataToGAS({
+                action: 'submitQuiz',
+                stuClass, stuNo, stuName, answers
+            }, function(response) {
+                if (response.status === 'success') {
+                    document.getElementById('finalScore').innerText = response.score;
+                    document.getElementById('quiz-main').classList.add('hidden');
+                    document.getElementById('quiz-result').classList.remove('hidden');
+                }
+            });
+        }
+
+        function fetchExplanations() {
+            sendDataToGAS({ action: 'getExplanations' }, function(response) {
+                const container = document.getElementById('explainContainer');
+                container.classList.remove('hidden');
+                
+                if (response.status === 'locked') {
+                    container.innerHTML = `<div class="p-4 bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-xl text-center font-bold">${response.message}</div>`;
+                } else if (response.status === 'success') {
+                    container.innerHTML = `<h3 class="text-xl font-bold text-sky-400 mb-4">標準答案與詳解</h3>` + 
+                    response.data.map((item, idx) => `
+                        <div class="glass p-4 rounded-xl space-y-2 border border-slate-700">
+                            <div class="font-bold text-slate-200">${idx + 1}. ${item.q}</div>
+                            <div class="text-sm text-emerald-400 font-bold">正確答案：${item.options[item.ans]}</div>
+                            <div class="text-xs text-slate-400 bg-slate-800/60 p-2 rounded">詳解：${item.explain}</div>
+                        </div>
+                    `).join('');
+                    if (window.MathJax) MathJax.typesetPromise();
+                }
+            });
+        }
+
+        // 教師管理
+        function teacherLogin(e) {
+            e.preventDefault();
+            const inputPwd = document.getElementById('teacherPwd').value;
+            sendDataToGAS({
+                action: 'getRecords',
+                password: inputPwd
+            }, function(response) {
+                if (response.status === 'success') {
+                    currentTeacherPassword = inputPwd;
+                    document.getElementById('teacher-login-card').classList.add('hidden');
+                    document.getElementById('teacher-panel').classList.remove('hidden');
+                    updateTeacherUI(response.data);
+                    updateAnnounceBtnUI(response.isAnnounced);
+                } else {
+                    alert(response.message);
+                }
+            });
+        }
+
+        function toggleAnnounce() {
+            sendDataToGAS({
+                action: 'toggleAnnounce',
+                password: currentTeacherPassword,
+                announceState: !isAnnouncedState
+            }, function(response) {
+                if (response.status === 'success') {
+                    updateAnnounceBtnUI(response.isAnnounced);
+                }
+            });
+        }
+
+        function updateAnnounceBtnUI(state) {
+            isAnnouncedState = state;
+            const btn = document.getElementById('announceBtn');
+            if (state) {
+                btn.className = "px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-bold text-sm transition";
+                btn.innerHTML = `<i class="fa-solid fa-bullhorn mr-1"></i>標準答案已公佈 (學生可檢視解析)`;
+            } else {
+                btn.className = "px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-bold text-sm transition";
+                btn.innerHTML = `<i class="fa-solid fa-lock mr-1"></i>公佈解答與解析 (目前隱藏中)`;
+            }
+        }
+
+        function refreshData() {
+            sendDataToGAS({
+                action: 'getRecords',
+                password: currentTeacherPassword
+            }, function(response) {
+                if (response.status === 'success') {
+                    updateTeacherUI(response.data);
+                    updateAnnounceBtnUI(response.isAnnounced);
+                }
+            });
+        }
+
+        function deleteRecord(rowId) {
+            if (!confirm('確定要刪除這筆紀錄嗎？')) return;
+            sendDataToGAS({
+                action: 'deleteRecord',
+                password: currentTeacherPassword,
+                rowId: rowId
+            }, function(response) {
+                if (response.status === 'success') refreshData();
+            });
+        }
+
+        function updateTeacherUI(data) {
+            const tbody = document.getElementById('scoreTableBody');
+            tbody.innerHTML = '';
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-slate-500">暫無學生成績紀錄</td></tr>`;
+                return;
+            }
+
+            let total = 0, max = -1, min = 101;
+            data.forEach(item => {
+                total += item.score;
+                if (item.score > max) max = item.score;
+                if (item.score < min) min = item.score;
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-800/50 transition';
+                tr.innerHTML = `
+                    <td class="px-6 py-4">${item.time}</td>
+                    <td class="px-6 py-4">${item.cls}</td>
+                    <td class="px-6 py-4">${item.no}</td>
+                    <td class="px-6 py-4 font-bold text-slate-100">${item.name}</td>
+                    <td class="px-6 py-4"><span class="px-3 py-1 bg-amber-400/10 text-amber-400 rounded-full font-bold">${item.score}</span></td>
+                    <td class="px-6 py-4 text-right">
+                        <button onclick="deleteRecord(${item.id})" class="text-rose-400 hover:text-rose-300 font-bold text-xs">刪除</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('statCount').innerText = data.length;
+            document.getElementById('statAvg').innerText = (total / data.length).toFixed(1);
+            document.getElementById('statMax').innerText = max;
+            document.getElementById('statMin').innerText = min;
+        }
+
+        // 通用跨網域 Fetch API 傳輸封裝
+        function sendDataToGAS(payload, callback) {
+            fetch(GAS_WEB_APP_URL, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (callback) callback(data);
+            })
+            .catch(error => {
+                console.error('API 通訊失敗:', error);
+                alert('與 Google Apps Script 後端連線失敗，請確認網路或驗證部署網址。');
+            });
+        }
+
+        window.onload = () => {
+            drawUnitCircle();
+            animateLoop();
+        };
+    </script>
+</body>
+</html>
