@@ -42,16 +42,11 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .neon-border-blue { box-shadow: 0 0 15px rgba(56, 189, 248, 0.25); }
-    .neon-border-emerald { box-shadow: 0 0 15px rgba(52, 211, 153, 0.25); }
-    .neon-border-purple { box-shadow: 0 0 15px rgba(168, 85, 247, 0.25); }
-
     canvas {
       background-color: #030712;
       border-radius: 0.75rem;
     }
 
-    /* Custom scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
       height: 8px;
@@ -94,7 +89,7 @@
           <button onclick="switchTab('m7')" id="nav-m7" class="tab-btn px-3 py-2 rounded-lg text-amber-400 hover:bg-amber-500/10 border border-amber-500/20"><i class="fa-solid fa-user-gear mr-1"></i>7. 教師管理後台</button>
         </nav>
 
-        <!-- Mobile Menu Trigger Button -->
+        <!-- Mobile Menu Trigger -->
         <div class="xl:hidden flex items-center">
           <button id="mobile-menu-btn" class="text-slate-300 hover:text-white p-2">
             <i class="fa-solid fa-bars text-xl"></i>
@@ -103,7 +98,7 @@
       </div>
     </div>
 
-    <!-- Mobile Navigation Drawer -->
+    <!-- Mobile Drawer -->
     <div id="mobile-menu" class="hidden xl:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-4 space-y-2 text-sm">
       <button onclick="switchTab('m1')" class="block w-full text-left px-3 py-2 text-cyan-400">1. 概念起源與定義</button>
       <button onclick="switchTab('m2')" class="block w-full text-left px-3 py-2 text-slate-300">2. 圖形與變形</button>
@@ -118,7 +113,7 @@
   <!-- Main Container -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
 
-    <!-- MODULE 1: ORIGIN, UNIT CIRCLE & 6 TRIG FUNCTIONS -->
+    <!-- MODULE 1: ORIGIN & DEFINITIONS -->
     <section id="module-m1" class="tab-content block space-y-8">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-4 gap-4">
         <div>
@@ -131,7 +126,6 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <!-- Interactive Canvas Card -->
         <div class="lg:col-span-7 glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
           <div class="flex justify-between items-center">
             <h2 class="text-lg font-bold text-slate-200 flex items-center gap-2">
@@ -144,7 +138,6 @@
             <canvas id="m1-canvas" class="w-full h-full border border-slate-800 rounded-xl shadow-inner"></canvas>
           </div>
 
-          <!-- Angle Slider -->
           <div class="space-y-2 pt-2">
             <div class="flex justify-between text-xs text-slate-400 font-mono">
               <span>0° (0 rad)</span>
@@ -155,10 +148,9 @@
           </div>
         </div>
 
-        <!-- Formulas & Hexagon Card -->
         <div class="lg:col-span-5 space-y-6">
           <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
-            <h3 class="text-md font-bold text-cyan-300 border-b border-slate-800 pb-2">六大三角函數定義 (直角三角形)</h3>
+            <h3 class="text-md font-bold text-cyan-300 border-b border-slate-800 pb-2">六大三角函數定義</h3>
             <div class="grid grid-cols-2 gap-3 text-sm font-mono">
               <div class="p-2.5 bg-slate-900/80 rounded-lg border border-slate-800"><span class="text-cyan-400 font-bold">sin θ</span> = 對邊 / 斜邊</div>
               <div class="p-2.5 bg-slate-900/80 rounded-lg border border-slate-800"><span class="text-emerald-400 font-bold">cos θ</span> = 鄰邊 / 斜邊</div>
@@ -194,7 +186,6 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <!-- Interactive Wave Canvas -->
         <div class="lg:col-span-8 glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
           <div class="flex justify-between items-center">
             <h2 class="text-lg font-bold text-slate-200"><i class="fa-solid fa-wave-square text-purple-400 mr-2"></i>正弦波變形畫布</h2>
@@ -208,11 +199,9 @@
           </div>
         </div>
 
-        <!-- Parameters Control Dashboard -->
         <div class="lg:col-span-4 glass-card p-6 rounded-2xl border border-slate-800 space-y-6">
           <h3 class="text-md font-bold text-slate-200 border-b border-slate-800 pb-2">四大變形參數調控</h3>
           
-          <!-- Slider A -->
           <div class="space-y-1">
             <div class="flex justify-between text-xs font-mono">
               <span class="text-slate-300">振幅 Amplitude (A)</span>
@@ -221,7 +210,6 @@
             <input type="range" id="m2-slider-a" min="0.1" max="3.0" step="0.1" value="1.0" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400">
           </div>
 
-          <!-- Slider B -->
           <div class="space-y-1">
             <div class="flex justify-between text-xs font-mono">
               <span class="text-slate-300">週期/頻率 Frequency (B)</span>
@@ -230,7 +218,6 @@
             <input type="range" id="m2-slider-b" min="0.2" max="4.0" step="0.1" value="1.0" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-400">
           </div>
 
-          <!-- Slider C -->
           <div class="space-y-1">
             <div class="flex justify-between text-xs font-mono">
               <span class="text-slate-300">相位移 Phase Shift (C)</span>
@@ -239,7 +226,6 @@
             <input type="range" id="m2-slider-c" min="-3.14" max="3.14" step="0.1" value="0.0" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-400">
           </div>
 
-          <!-- Slider D -->
           <div class="space-y-1">
             <div class="flex justify-between text-xs font-mono">
               <span class="text-slate-300">垂直平移 Vertical Shift (D)</span>
@@ -249,21 +235,21 @@
           </div>
 
           <button onclick="resetM2Sliders()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg font-semibold transition border border-slate-700">
-            重設參數 (Reset Parameters)
+            重設參數 (Reset)
           </button>
         </div>
       </div>
     </section>
 
-    <!-- MODULE 3: CIRCULAR MOTION & SHM WAVE PROPAGATION -->
+    <!-- MODULE 3: CIRCULAR MOTION & SHM -->
     <section id="module-m3" class="tab-content hidden space-y-8">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-4 gap-4">
         <div>
           <h1 class="text-3xl font-extrabold text-white tracking-tight">模組三：等速圓周運動與正弦波場域</h1>
-          <p class="text-slate-400 text-sm mt-1">展示圓周旋轉粒子（Simple Harmonic Motion）與波形時間時間投影的即時連動。</p>
+          <p class="text-slate-400 text-sm mt-1">展示圓周旋轉粒子（Simple Harmonic Motion）與波形時間投影的即時連動。</p>
         </div>
         <div class="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-full text-emerald-400 text-xs font-semibold">
-          物理與幾何連動 Motion & Waves
+          Motion & Waves
         </div>
       </div>
 
@@ -280,7 +266,6 @@
           <canvas id="m3-canvas" class="w-full h-full border border-slate-800 rounded-xl shadow-inner"></canvas>
         </div>
 
-        <!-- Controls -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
           <div class="space-y-1">
             <div class="flex justify-between text-xs font-mono">
@@ -310,7 +295,6 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Pythagorean & Sum Formulas -->
         <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
           <h3 class="text-lg font-bold text-cyan-300 border-b border-slate-800 pb-2"><i class="fa-solid fa-calculator text-cyan-400 mr-2"></i>核心恆等式 Identities</h3>
           <div class="space-y-3 text-sm font-mono text-slate-300">
@@ -332,7 +316,6 @@
           </div>
         </div>
 
-        <!-- Laws of Sines & Cosines -->
         <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
           <h3 class="text-lg font-bold text-purple-300 border-b border-slate-800 pb-2"><i class="fa-solid fa-shapes text-purple-400 mr-2"></i>任意三角形定理 Laws</h3>
           <div class="space-y-4 text-sm text-slate-300">
@@ -352,7 +335,7 @@
       </div>
     </section>
 
-    <!-- MODULE 5: REAL-WORLD APPLICATIONS & WEB AUDIO API -->
+    <!-- MODULE 5: REAL-WORLD & WEB AUDIO API -->
     <section id="module-m5" class="tab-content hidden space-y-8">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-4 gap-4">
         <div>
@@ -360,12 +343,11 @@
           <p class="text-slate-400 text-sm mt-1">將數學公式轉化為聲波 Sound Generator 與傅立葉級數 (Fourier Series) 波形疊加。</p>
         </div>
         <div class="px-3 py-1.5 bg-rose-500/10 border border-rose-500/30 rounded-full text-rose-400 text-xs font-semibold">
-          Web Audio API & Audio Visualizer
+          Web Audio API & Visualizer
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <!-- Audio Synthesizer Controls -->
         <div class="lg:col-span-5 glass-card p-6 rounded-2xl border border-slate-800 space-y-6">
           <h2 class="text-lg font-bold text-slate-200"><i class="fa-solid fa-record-vinyl text-rose-400 mr-2"></i>聲音發聲器 (Audio Synth)</h2>
           
@@ -374,7 +356,6 @@
               <i class="fa-solid fa-play"></i> 開啟音訊發聲器 (Play Sound)
             </button>
 
-            <!-- Freq Slider -->
             <div class="space-y-1">
               <div class="flex justify-between text-xs font-mono">
                 <span class="text-slate-300">音高 / 頻率 Frequency (Hz)</span>
@@ -383,7 +364,6 @@
               <input type="range" id="m5-slider-freq" min="100" max="1000" value="440" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-400">
             </div>
 
-            <!-- Waveform selector -->
             <div class="space-y-2">
               <label class="text-xs font-mono text-slate-300">聲波類型 Wave Type</label>
               <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
@@ -396,10 +376,9 @@
           </div>
         </div>
 
-        <!-- Fourier Canvas Card -->
         <div class="lg:col-span-7 glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
           <div class="flex justify-between items-center">
-            <h3 class="text-lg font-bold text-slate-200"><i class="fa-solid fa-chart-line text-cyan-400 mr-2"></i>傅立葉級數 (Fourier Square Wave)</h3>
+            <h3 class="text-lg font-bold text-slate-200"><i class="fa-solid fa-chart-line text-cyan-400 mr-2"></i>傅立葉級數 (Fourier Series)</h3>
             <span id="m5-val-harmonics" class="text-cyan-400 font-mono text-sm font-bold">諧波數 N = 1</span>
           </div>
 
@@ -427,7 +406,7 @@
         </div>
       </div>
 
-      <!-- Login / Identity Card -->
+      <!-- Login Card -->
       <div id="quiz-login-card" class="max-w-md mx-auto glass-card p-8 rounded-2xl border border-slate-800 space-y-6">
         <h2 class="text-xl font-bold text-center text-emerald-400"><i class="fa-solid fa-user-pen mr-2"></i>學生測驗登入 Portal</h2>
         <form onsubmit="startQuiz(event)" class="space-y-4">
@@ -449,7 +428,7 @@
         </form>
       </div>
 
-      <!-- Active Quiz Container -->
+      <!-- Quiz Body -->
       <div id="quiz-body-card" class="hidden max-w-4xl mx-auto space-y-6">
         <div class="glass-card p-4 rounded-xl border border-slate-800 flex justify-between items-center text-sm">
           <div class="font-semibold text-slate-300">
@@ -458,9 +437,7 @@
           <button onclick="resetStudentQuiz()" class="text-xs text-slate-400 hover:text-rose-400 underline">重新輸入個人資料</button>
         </div>
 
-        <div id="quiz-questions-list" class="space-y-6">
-          <!-- 20 Questions dynamically rendered via JS -->
-        </div>
+        <div id="quiz-questions-list" class="space-y-6"></div>
 
         <div class="text-center pt-4">
           <button onclick="submitQuiz()" id="quiz-submit-btn" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg text-lg transition">
@@ -470,7 +447,7 @@
       </div>
     </section>
 
-    <!-- MODULE 7: TEACHER GRADEBOOK MANAGEMENT -->
+    <!-- MODULE 7: TEACHER MANAGEMENT -->
     <section id="module-m7" class="tab-content hidden space-y-8">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-4 gap-4">
         <div>
@@ -493,9 +470,8 @@
         </form>
       </div>
 
-      <!-- Teacher Dashboard Body -->
+      <!-- Teacher Dashboard -->
       <div id="teacher-dashboard-body" class="hidden space-y-6">
-        <!-- Control Toolbar -->
         <div class="glass-card p-6 rounded-2xl border border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
           <div class="flex items-center space-x-3">
             <span class="text-sm font-semibold text-slate-300">公佈正確答案與詳細解析：</span>
@@ -517,7 +493,6 @@
           </div>
         </div>
 
-        <!-- Student Scores Table -->
         <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs font-mono">
@@ -544,17 +519,14 @@
 
   </main>
 
-  <!-- Footer -->
   <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
-    <p>© 2026 Trigonometry Master Hub. Fully Integrated with Google Apps Script & Canvas Engines.</p>
+    <p>© 2026 Trigonometry Master Hub. Fully Integrated with Google Apps Script Engine.</p>
   </footer>
 
   <!-- JAVASCRIPT CORE LOGIC -->
   <script>
-    // -------------------------------------------------------------
-    // GAS BACKEND API CONFIGURATION
-    // -------------------------------------------------------------
-    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzSxXPp14p0HJcpgFzC48t4IMCbThrZd2RT45jlHXPJRvGd6A4T1JvogpLd6-jZX358cA/exec";
+    // 最新指定的 GAS Web App URL 部署端點
+    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxNGNkpvwWo4mcStTXcMJ-UR_l6G4JZwYwZ5lrE6GkkjWbOGDeu0Npa1TPo1MlJLU2L1w/exec";
     
     let teacherPasswordCache = "";
     let isAnswersPublishedGlobally = false;
@@ -568,24 +540,17 @@
     let isAudioPlaying = false;
     let currentWaveType = 'sine';
 
-    // Animation Request Frames
     let animM1, animM2, animM3, animM5;
 
-    // -------------------------------------------------------------
-    // INITIALIZATION & TAB NAVIGATION
-    // -------------------------------------------------------------
     window.addEventListener('DOMContentLoaded', () => {
       switchTab('m1');
       
-      // Mobile Drawer Toggle
       document.getElementById('mobile-menu-btn').addEventListener('click', () => {
         document.getElementById('mobile-menu').classList.toggle('hidden');
       });
 
-      // Canvas Sliders Event Listeners
       initSliderEvents();
 
-      // Render KaTeX Formulas initially
       if (typeof renderMathInElement === 'function') {
         renderMathInElement(document.body, {
           delimiters: [
@@ -597,20 +562,17 @@
     });
 
     function switchTab(tabId) {
-      // Cancel active animation frames
       if (animM1) cancelAnimationFrame(animM1);
       if (animM2) cancelAnimationFrame(animM2);
       if (animM3) cancelAnimationFrame(animM3);
       if (animM5) cancelAnimationFrame(animM5);
 
-      // Hide all contents
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('text-cyan-400', 'bg-slate-800/80', 'border', 'border-cyan-500/30');
         btn.classList.add('text-slate-400');
       });
 
-      // Show selected tab
       const target = document.getElementById(`module-${tabId}`);
       if (target) target.classList.remove('hidden');
 
@@ -619,10 +581,8 @@
         btn.classList.add('text-cyan-400', 'bg-slate-800/80', 'border', 'border-cyan-500/30');
       }
 
-      // Hide mobile drawer
       document.getElementById('mobile-menu').classList.add('hidden');
 
-      // Initialize Canvases corresponding to selected tab
       if (tabId === 'm1') initM1Canvas();
       if (tabId === 'm2') initM2Canvas();
       if (tabId === 'm3') initM3Canvas();
@@ -631,17 +591,14 @@
     }
 
     function initSliderEvents() {
-      // Module 1
       const m1Slider = document.getElementById('m1-angle-slider');
       if (m1Slider) m1Slider.addEventListener('input', drawM1);
 
-      // Module 2
       ['a', 'b', 'c', 'd'].forEach(param => {
         const slider = document.getElementById(`m2-slider-${param}`);
         if (slider) slider.addEventListener('input', drawM2);
       });
 
-      // Module 3
       document.getElementById('m3-slider-speed').addEventListener('input', (e) => {
         document.getElementById('m3-val-speed').innerText = parseFloat(e.target.value).toFixed(1) + 'x';
       });
@@ -649,7 +606,6 @@
         document.getElementById('m3-val-radius').innerText = e.target.value + 'px';
       });
 
-      // Module 5
       document.getElementById('m5-slider-freq').addEventListener('input', (e) => {
         const freq = e.target.value;
         document.getElementById('m5-val-freq').innerText = freq + ' Hz';
@@ -663,13 +619,8 @@
       });
     }
 
-    // -------------------------------------------------------------
-    // MODULE 1 CANVAS: UNIT CIRCLE & DEFINITIONS
-    // -------------------------------------------------------------
-    function initM1Canvas() {
-      drawM1();
-    }
-
+    // MODULE 1 CANVAS
+    function initM1Canvas() { drawM1(); }
     function drawM1() {
       const canvas = document.getElementById('m1-canvas');
       if (!canvas) return;
@@ -692,7 +643,6 @@
 
       ctx.clearRect(0, 0, width, height);
 
-      // Grid Axes
       ctx.strokeStyle = '#1E293B';
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -700,55 +650,41 @@
       ctx.moveTo(centerX, 0); ctx.lineTo(centerX, height);
       ctx.stroke();
 
-      // Unit Circle
       ctx.strokeStyle = '#334155';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
       ctx.stroke();
 
-      // Vector Point calculation
       const px = centerX + radius * Math.cos(-angleRad);
       const py = centerY + radius * Math.sin(-angleRad);
 
-      // Radius line
       ctx.strokeStyle = '#38BDF8';
       ctx.lineWidth = 2.5;
       ctx.beginPath();
-      ctx.moveTo(centerX, centerY);
-      ctx.lineTo(px, py);
+      ctx.moveTo(centerX, centerY); ctx.lineTo(px, py);
       ctx.stroke();
 
-      // cos(θ) line (X-axis)
       ctx.strokeStyle = '#34D399';
       ctx.lineWidth = 3;
       ctx.beginPath();
-      ctx.moveTo(centerX, centerY);
-      ctx.lineTo(px, centerY);
+      ctx.moveTo(centerX, centerY); ctx.lineTo(px, centerY);
       ctx.stroke();
 
-      // sin(θ) line (Y-axis)
       ctx.strokeStyle = '#F43F5E';
       ctx.lineWidth = 3;
       ctx.beginPath();
-      ctx.moveTo(px, centerY);
-      ctx.lineTo(px, py);
+      ctx.moveTo(px, centerY); ctx.lineTo(px, py);
       ctx.stroke();
 
-      // Point Dot
       ctx.fillStyle = '#FBBF24';
       ctx.beginPath();
       ctx.arc(px, py, 6, 0, Math.PI * 2);
       ctx.fill();
     }
 
-    // -------------------------------------------------------------
-    // MODULE 2 CANVAS: WAVE TRANSFORMATIONS
-    // -------------------------------------------------------------
-    function initM2Canvas() {
-      drawM2();
-    }
-
+    // MODULE 2 CANVAS
+    function initM2Canvas() { drawM2(); }
     function drawM2() {
       const canvas = document.getElementById('m2-canvas');
       if (!canvas) return;
@@ -776,7 +712,6 @@
 
       ctx.clearRect(0, 0, width, height);
 
-      // Axes
       const centerY = height / 2 - D * 30;
       ctx.strokeStyle = '#1E293B';
       ctx.lineWidth = 1;
@@ -785,7 +720,6 @@
       ctx.moveTo(width / 2, 0); ctx.lineTo(width / 2, height);
       ctx.stroke();
 
-      // Wave Plot
       ctx.strokeStyle = '#C084FC';
       ctx.lineWidth = 3;
       ctx.beginPath();
@@ -809,9 +743,7 @@
       drawM2();
     }
 
-    // -------------------------------------------------------------
-    // MODULE 3 CANVAS: CIRCULAR MOTION & WAVE PROPAGATION
-    // -------------------------------------------------------------
+    // MODULE 3 CANVAS
     let m3Angle = 0;
     let m3IsRunning = true;
 
@@ -824,10 +756,7 @@
         btnToggle.innerText = m3IsRunning ? '暫停 Pause' : '繼續 Play';
       };
 
-      btnReset.onclick = () => {
-        m3Angle = 0;
-      };
-
+      btnReset.onclick = () => { m3Angle = 0; };
       loopM3();
     }
 
@@ -852,27 +781,23 @@
 
         ctx.clearRect(0, 0, width, height);
 
-        // Center Axis
         ctx.strokeStyle = '#1E293B';
         ctx.beginPath();
         ctx.moveTo(0, centerY); ctx.lineTo(width, centerY);
         ctx.stroke();
 
-        // Left Circular Orbit
         ctx.strokeStyle = '#334155';
         ctx.beginPath();
         ctx.arc(circleCenterX, centerY, radius, 0, Math.PI * 2);
         ctx.stroke();
 
-        // Rotating particle
         const px = circleCenterX + radius * Math.cos(-m3Angle);
         const py = centerY + radius * Math.sin(-m3Angle);
 
         ctx.strokeStyle = '#34D399';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(circleCenterX, centerY);
-        ctx.lineTo(px, py);
+        ctx.moveTo(circleCenterX, centerY); ctx.lineTo(px, py);
         ctx.stroke();
 
         ctx.fillStyle = '#34D399';
@@ -880,17 +805,14 @@
         ctx.arc(px, py, 6, 0, Math.PI * 2);
         ctx.fill();
 
-        // Dashed Projection Line
         const waveStartX = width * 0.45;
         ctx.strokeStyle = '#38BDF8';
         ctx.setLineDash([4, 4]);
         ctx.beginPath();
-        ctx.moveTo(px, py);
-        ctx.lineTo(waveStartX, py);
+        ctx.moveTo(px, py); ctx.lineTo(waveStartX, py);
         ctx.stroke();
         ctx.setLineDash([]);
 
-        // Right Wave Trace
         ctx.strokeStyle = '#38BDF8';
         ctx.lineWidth = 3;
         ctx.beginPath();
@@ -907,9 +829,7 @@
       animM3 = requestAnimationFrame(loopM3);
     }
 
-    // -------------------------------------------------------------
-    // MODULE 5: WEB AUDIO & FOURIER CANVAS
-    // -------------------------------------------------------------
+    // MODULE 5: AUDIO SYNTH & FOURIER
     function toggleAudioSynth() {
       if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -931,7 +851,7 @@
 
         oscillator.start();
         isAudioPlaying = true;
-        btn.innerHTML = '<i class="fa-solid fa-stop"></i> 停止發聲 (Stop Sound)';
+        btn.innerHTML = '<i class="fa-solid fa-stop"></i> 停止發聲 (Stop)';
         btn.classList.replace('from-rose-600', 'from-slate-700');
         btn.classList.replace('to-pink-600', 'to-slate-800');
       } else {
@@ -950,10 +870,7 @@
       }
     }
 
-    function initM5Canvas() {
-      drawM5();
-    }
-
+    function initM5Canvas() { drawM5(); }
     function drawM5() {
       const canvas = document.getElementById('m5-canvas');
       if (!canvas) return;
@@ -971,13 +888,11 @@
 
       ctx.clearRect(0, 0, width, height);
 
-      // Axis
       ctx.strokeStyle = '#1E293B';
       ctx.beginPath();
       ctx.moveTo(0, centerY); ctx.lineTo(width, centerY);
       ctx.stroke();
 
-      // Draw Fourier Square Wave Synthesis
       ctx.strokeStyle = '#38BDF8';
       ctx.lineWidth = 2.5;
       ctx.beginPath();
@@ -987,7 +902,7 @@
         const xVal = (x - width / 2) * 0.03;
 
         for (let i = 1; i <= N; i++) {
-          const n = 2 * i - 1; // Odd harmonics 1, 3, 5...
+          const n = 2 * i - 1;
           ySum += (1 / n) * Math.sin(n * xVal);
         }
 
@@ -998,12 +913,10 @@
       ctx.stroke();
     }
 
-    // -------------------------------------------------------------
-    // MODULE 6: STUDENT QUIZ SYSTEM (GAS CLOUD INTEGRATION)
-    // -------------------------------------------------------------
+    // MODULE 6: QUIZ SYSTEM (GAS INTEGRATED)
     async function loadQuizFromGAS() {
       const listEl = document.getElementById('quiz-questions-list');
-      listEl.innerHTML = '<div class="text-center py-8 text-slate-400">正在從 Google 雲端載入測驗題目...</div>';
+      listEl.innerHTML = '<div class="text-center py-8 text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i>正在向 Google 雲端載入測驗題目...</div>';
 
       try {
         const res = await fetch(`${GAS_API_URL}?action=getQuestions`);
@@ -1017,7 +930,7 @@
           listEl.innerHTML = '<div class="text-rose-400 text-center py-8">無法載入題目，請稍後重試。</div>';
         }
       } catch (err) {
-        listEl.innerHTML = '<div class="text-rose-400 text-center py-8">網路連線異常，無法對接 GAS 伺服器。</div>';
+        listEl.innerHTML = '<div class="text-rose-400 text-center py-8">網路連線異常，無法連線至 GAS 雲端伺服器。</div>';
       }
     }
 
@@ -1068,7 +981,6 @@
         container.appendChild(card);
       });
 
-      // Render KaTeX for rendered questions
       if (typeof renderMathInElement === 'function') {
         renderMathInElement(container, {
           delimiters: [
@@ -1090,7 +1002,7 @@
 
       const btn = document.getElementById('quiz-submit-btn');
       btn.disabled = true;
-      btn.innerText = '計算與上傳雲端中...';
+      btn.innerText = '雲端閱卷並記錄成績中...';
 
       try {
         const res = await fetch(GAS_API_URL, {
@@ -1153,9 +1065,7 @@
       }
     }
 
-    // -------------------------------------------------------------
-    // MODULE 7: TEACHER GRADEBOOK MANAGEMENT (GAS CLOUD INTEGRATION)
-    // -------------------------------------------------------------
+    // MODULE 7: TEACHER MANAGEMENT (GAS INTEGRATED)
     async function verifyTeacherPass(event) {
       event.preventDefault();
       const pass = document.getElementById('teacher-pass-input').value;
@@ -1166,7 +1076,7 @@
 
     async function loadTeacherScoresFromGAS() {
       const tbody = document.getElementById('teacher-scores-tbody');
-      tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-slate-400">正在向 Google 雲端認證並讀取成績...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i>正在向 Google 雲端認證並讀取成績...</td></tr>';
 
       try {
         const res = await fetch(`${GAS_API_URL}?action=getScores&password=${encodeURIComponent(teacherPasswordCache)}`);
@@ -1176,10 +1086,7 @@
           document.getElementById('teacher-auth-card').classList.add('hidden');
           document.getElementById('teacher-dashboard-body').classList.remove('hidden');
 
-          // Update Publish Button status
           updatePublishBtnUI(data.publishAnswers);
-
-          // Render Scores Table
           renderScoresTable(data.data);
         } else {
           alert('密碼驗證失敗，請輸入正確登入密碼！');
@@ -1193,7 +1100,7 @@
       const tbody = document.getElementById('teacher-scores-tbody');
       tbody.innerHTML = '';
 
-      if (scores.length === 0) {
+      if (!scores || scores.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-slate-500">目前尚無學生提交紀錄。</td></tr>';
         return;
       }
